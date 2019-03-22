@@ -24,10 +24,6 @@ class Movies extends Component {
         return moviesCountDisplay + " movies in the database.";
     };
 
-    // renderRows = movies => {
-    //     return;
-    // };
-
     render() {
         return (
             <React.Fragment>
