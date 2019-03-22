@@ -8,7 +8,7 @@ class TableOfMovies extends Component {
         movies: getMovies()
     };
 
-    deleteMovieInDOM = movieId => {
+    handleDelete = movieId => {
         const newState = this.state;
         const index = newState.movies.findIndex(a => a._id === movieId);
         if (index === -1) return;
@@ -27,7 +27,7 @@ class TableOfMovies extends Component {
                     <td className="col-md-3">
                         <button
                             onClick={() => {
-                                this.deleteMovieInDOM(movie._id);
+                                this.handleDelete(movie._id);
                             }}
                             className="btn btn-danger"
                         >
