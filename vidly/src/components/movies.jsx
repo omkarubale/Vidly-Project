@@ -18,16 +18,15 @@ class Movies extends Component {
         this.setState(newState);
     };
 
-    showNumberOfMovies = number => {
-        let moviesCountDisplay = "There are ";
-        moviesCountDisplay += number === 0 ? "no" : number;
-        return moviesCountDisplay + " movies in the database.";
-    };
-
     render() {
+        if (this.state.movieCount === 0)
+            return <span>There are no movies in the database.</span>;
+
         return (
             <React.Fragment>
-                <span>{this.showNumberOfMovies(this.state.movieCount)}</span>
+                <span>
+                    Showing {this.state.movieCount} movies in the database.
+                </span>
                 <table className="table">
                     <thead>
                         <tr className="row">
