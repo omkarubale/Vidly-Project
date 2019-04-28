@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import { getMovies } from "../services/fakeMovieService";
+import Like from "./common/like";
 
 class Movies extends Component {
     state = {
@@ -16,6 +17,14 @@ class Movies extends Component {
         newState.movies.splice(index, 1);
         newState.movieCount--;
         this.setState(newState);
+    };
+
+    handleLike = movie => {
+        const movies = [...this.state.movies];
+        const index = movies.indexOf(movie);
+        movies[index] = { ...movies[index] };
+        movies[index].liked = !movies[index].liked;
+        this.setState({ movies });
     };
 
     render() {
@@ -34,7 +43,8 @@ class Movies extends Component {
                             <th className="col-md-2">Genre</th>
                             <th className="col-md-2">Stock</th>
                             <th className="col-md-2">Rate</th>
-                            <th className="col-md-3">Actions</th>
+                            <th className="col-md-1" />
+                            <th className="col-md-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +61,15 @@ class Movies extends Component {
                                     <td className="col-md-2">
                                         {movie.dailyRentalRate}
                                     </td>
-                                    <td className="col-md-3">
+                                    <td>
+                                        <Like
+                                            liked={movie.liked}
+                                            onClick={() => {
+                                                this.handleLike(movie);
+                                            }}
+                                        />
+                                    </td>
+                                    <td className="col-md-2">
                                         <button
                                             onClick={() => {
                                                 this.handleDelete(movie._id);
