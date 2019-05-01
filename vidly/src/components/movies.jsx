@@ -3,11 +3,15 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
     state = {
         movies: getMovies(),
-        movieCount: getMovies().length
+        movieCount: getMovies().length,
+        pageSize: 4,
+        currentPage: 1
     };
 
     handleDelete = movieId => {
@@ -27,10 +31,18 @@ class Movies extends Component {
         this.setState({ movies });
     };
 
+    handlePageChange = page => {
+        this.setState({ currentPage: page });
+    };
+
     render() {
+        const { length: count } = this.state.movies;
+        const { pageSize, currentPage, movies: allMovies } = this.state;
+
         if (this.state.movieCount === 0)
             return <span>There are no movies in the database.</span>;
 
+        const movies = paginate(allMovies, currentPage, pageSize);
         return (
             <React.Fragment>
                 <span>
@@ -48,7 +60,7 @@ class Movies extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.movies.map(movie => {
+                        {movies.map(movie => {
                             return (
                                 <tr key={movie._id} className="row">
                                     <td className="col-md-3">{movie.title}</td>
@@ -84,6 +96,12 @@ class Movies extends Component {
                         })}
                     </tbody>
                 </table>
+                <Pagination
+                    itemsCount={count}
+                    pageSize={pageSize}
+                    currentPage={currentPage}
+                    onPageChange={this.handlePageChange}
+                />
             </React.Fragment>
         );
     }
